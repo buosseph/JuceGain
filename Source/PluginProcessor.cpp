@@ -10,12 +10,13 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include <math.h>
 
 
 //==============================================================================
 SimpleGainAudioProcessor::SimpleGainAudioProcessor()
 {
-    gain = DEAFAULT_GAIN;
+    gain = DEAFAULT_GAIN_MULTIPLER;
 }
 
 SimpleGainAudioProcessor::~SimpleGainAudioProcessor()
@@ -47,9 +48,11 @@ float SimpleGainAudioProcessor::getParameter (int index)
 
 void SimpleGainAudioProcessor::setParameter (int index, float newValue)
 {
+    // newValue always between 0.0f and 1.0f
     switch (index) {
         case gainParam:
-            gain = newValue;
+            // Map 0.-1. to .1-10.  (10. = 20db, .1 = -20db)
+            gain = .1f * expf( GAIN_EXP_CONST * newValue);
             break;
             
         default:

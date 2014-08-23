@@ -69,7 +69,8 @@ public:
 private:
     //==============================================================================
     
-    const float DEAFAULT_GAIN = 1.0f;
+    const float DEAFAULT_GAIN_MULTIPLER = 0.5f; // Converts to db scale once processing begins
+    const float GAIN_EXP_CONST = logf(10.f/.1f);
     
     // Parameter values
     float gain;
@@ -81,6 +82,8 @@ private:
         
         totalNumParams
     };
+    
+    float calculateGainMultiplier(float gain);
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleGainAudioProcessor)
 };
