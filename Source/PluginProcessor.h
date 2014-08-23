@@ -68,7 +68,19 @@ public:
 
 private:
     //==============================================================================
+    
+    const float DEAFAULT_GAIN = 1.0f;
+    
+    // Parameter values
     float gain;
+    
+    // Parameter indices
+    enum Parameters
+    {
+        gainParam,
+        
+        totalNumParams
+    };
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleGainAudioProcessor)
 };

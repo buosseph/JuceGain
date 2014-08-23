@@ -15,7 +15,7 @@
 //==============================================================================
 SimpleGainAudioProcessor::SimpleGainAudioProcessor()
 {
-    gain = 1.5f;
+    gain = DEAFAULT_GAIN;
 }
 
 SimpleGainAudioProcessor::~SimpleGainAudioProcessor()
@@ -30,26 +30,47 @@ const String SimpleGainAudioProcessor::getName() const
 
 int SimpleGainAudioProcessor::getNumParameters()
 {
-    return 0;
+    // Return total number of parameters
+    return totalNumParams;
 }
 
 float SimpleGainAudioProcessor::getParameter (int index)
 {
-    return 0.0f;
+    switch (index) {
+        case gainParam:
+            return gain;
+            
+        default:
+            return 0.0f;
+    }
 }
 
 void SimpleGainAudioProcessor::setParameter (int index, float newValue)
 {
+    switch (index) {
+        case gainParam:
+            gain = newValue;
+            break;
+            
+        default:
+            break;
+    }
 }
 
 const String SimpleGainAudioProcessor::getParameterName (int index)
 {
-    return String::empty;
+    switch (index) {
+        case gainParam:
+            return "Gain";
+            
+        default:
+            return String::empty;
+    }
 }
 
 const String SimpleGainAudioProcessor::getParameterText (int index)
 {
-    return String::empty;
+    return String(getParameter(index), 2);
 }
 
 const String SimpleGainAudioProcessor::getInputChannelName (int channelIndex) const
@@ -157,7 +178,8 @@ void SimpleGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
 //==============================================================================
 bool SimpleGainAudioProcessor::hasEditor() const
 {
-    return true; // (change this to false if you choose to not supply an editor)
+    // Temporarily false until work on GUI begins
+    return false; // (change this to false if you choose to not supply an editor)
 }
 
 AudioProcessorEditor* SimpleGainAudioProcessor::createEditor()
