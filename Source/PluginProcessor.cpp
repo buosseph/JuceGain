@@ -181,8 +181,12 @@ void SimpleGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
     // audio processing...
     if (!bypass) {
         
-        for (int channel = 0; channel < getNumInputChannels(); ++channel) {
-            buffer.applyGain(channel, 0, buffer.getNumSamples(), gain);
+        float* leftChannel = buffer.getWritePointer(0);
+        float* rightChannel = buffer.getWritePointer(1);
+        
+        for (int i = 0; i < buffer.getNumSamples(); i++) {
+            leftChannel[i] = leftChannel[i] * gain;
+            rightChannel[i] = rightChannel[i] * gain;
         }
         
         // In case we have more outputs than inputs, we'll clear any output
