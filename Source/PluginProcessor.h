@@ -74,11 +74,13 @@ private:
     
     // Parameter values
     float gain;
+    bool bypass;
     
     // Parameter indices
     enum Parameters
     {
         gainParam,
+        bypassParam,
         
         totalNumParams
     };

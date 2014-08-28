@@ -17,6 +17,7 @@
 SimpleGainAudioProcessor::SimpleGainAudioProcessor()
 {
     gain = DEAFAULT_GAIN_MULTIPLER;
+    bypass = false;
 }
 
 SimpleGainAudioProcessor::~SimpleGainAudioProcessor()
@@ -41,6 +42,9 @@ float SimpleGainAudioProcessor::getParameter (int index)
         case gainParam:
             return gain;
             
+        case bypassParam:
+            return bypass;
+            
         default:
             return 0.0f;
     }
@@ -54,6 +58,14 @@ void SimpleGainAudioProcessor::setParameter (int index, float newValue)
             // Map 0.-1. to .1-10.  (10. = 20db, .1 = -20db)
             gain = .1f * expf( GAIN_EXP_CONST * newValue);
             break;
+        
+        case bypassParam:
+            if (newValue > 0.f) {
+                bypass = true;
+            } else {
+                bypass = false;
+            }
+            break;
             
         default:
             break;
@@ -65,6 +77,9 @@ const String SimpleGainAudioProcessor::getParameterName (int index)
     switch (index) {
         case gainParam:
             return "Gain";
+            
+        case bypassParam:
+            return "Bypass";
             
         default:
             return String::empty;
@@ -164,18 +179,23 @@ void SimpleGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
 {
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
-    for (int channel = 0; channel < getNumInputChannels(); ++channel)
-    {
-        buffer.applyGain(channel, 0, buffer.getNumSamples(), gain);
+    if (!bypass) {
+        
+        for (int channel = 0; channel < getNumInputChannels(); ++channel) {
+            buffer.applyGain(channel, 0, buffer.getNumSamples(), gain);
+        }
+        
+        // In case we have more outputs than inputs, we'll clear any output
+        // channels that didn't contain input data, (because these aren't
+        // guaranteed to be empty - they may contain garbage).
+        for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i)
+        {
+            buffer.clear (i, 0, buffer.getNumSamples());
+        }
+        
     }
 
-    // In case we have more outputs than inputs, we'll clear any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i)
-    {
-        buffer.clear (i, 0, buffer.getNumSamples());
-    }
+
 }
 
 //==============================================================================
