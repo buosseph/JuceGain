@@ -17,6 +17,7 @@
 SimpleGainAudioProcessor::SimpleGainAudioProcessor()
 {
     gain = DEAFAULT_GAIN_MULTIPLER;
+    pan = PAN_CENTER;
     bypass = false;
 }
 
@@ -42,6 +43,9 @@ float SimpleGainAudioProcessor::getParameter (int index)
         case gainParam:
             return gain;
             
+        case panParam:
+            return pan;
+            
         case bypassParam:
             return bypass;
             
@@ -59,6 +63,11 @@ void SimpleGainAudioProcessor::setParameter (int index, float newValue)
             gain = .1f * expf( GAIN_EXP_CONST * newValue);
             break;
         
+        case panParam:
+            // 0 = L, 0.5 = C, 1 = R
+            pan = newValue;
+            break;
+            
         case bypassParam:
             if (newValue > 0.f) {
                 bypass = true;
@@ -77,6 +86,9 @@ const String SimpleGainAudioProcessor::getParameterName (int index)
     switch (index) {
         case gainParam:
             return "Gain";
+            
+        case panParam:
+            return "Pan";
             
         case bypassParam:
             return "Bypass";
@@ -185,8 +197,10 @@ void SimpleGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
         float* rightChannel = buffer.getWritePointer(1);
         
         for (int i = 0; i < buffer.getNumSamples(); i++) {
-            leftChannel[i] = leftChannel[i] * gain;
-            rightChannel[i] = rightChannel[i] * gain;
+            
+            // Linear pan only temporary
+            leftChannel[i] = leftChannel[i] * gain * (1.f - pan);
+            rightChannel[i] = rightChannel[i] * gain * pan;
         }
         
         // In case we have more outputs than inputs, we'll clear any output

@@ -70,16 +70,18 @@ private:
     //==============================================================================
     
     const float DEAFAULT_GAIN_MULTIPLER = 0.5f; // Converts to db scale once processing begins
+    const float PAN_CENTER = 0.5f;
     const float GAIN_EXP_CONST = logf(10.f/.1f);
     
     // Parameter values
-    float gain;
+    float gain, pan;
     bool bypass;
     
     // Parameter indices
     enum Parameters
     {
         gainParam,
+        panParam,
         bypassParam,
         
         totalNumParams
