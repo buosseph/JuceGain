@@ -17,9 +17,13 @@
 SimpleGainAudioProcessor::SimpleGainAudioProcessor()
 {
     gain = DEFAULT_GAIN;
-    gain_db = .1f * expf( GAIN_EXP_CONST * DEFAULT_GAIN);
+    gainDb = .1f * expf( GAIN_EXP_CONST * DEFAULT_GAIN);
     pan = DEFAULT_PAN_CENTER;
     bypass = false;
+    invertLeft = false;
+    invertLeftMultipler = 1.f;
+    invertRight = false;
+    invertRightMultipler = 1.f;
 }
 
 SimpleGainAudioProcessor::~SimpleGainAudioProcessor()
@@ -50,6 +54,12 @@ float SimpleGainAudioProcessor::getParameter (int index)
         case bypassParam:
             return bypass;
             
+        case invertLeftParam:
+            return invertLeft;
+            
+        case invertRightParam:
+            return invertRight;
+            
         default:
             return 0.0f;
     }
@@ -62,7 +72,7 @@ void SimpleGainAudioProcessor::setParameter (int index, float newValue)
         case gainParam:
             gain = newValue;
             // Map 0.-1. to .1-10.  (10. = 20db, .1 = -20db)
-            gain_db = .1f * expf( GAIN_EXP_CONST * newValue);
+            gainDb = .1f * expf( GAIN_EXP_CONST * newValue);
             break;
         
         case panParam:
@@ -75,6 +85,26 @@ void SimpleGainAudioProcessor::setParameter (int index, float newValue)
                 bypass = true;
             } else {
                 bypass = false;
+            }
+            break;
+            
+        case invertLeftParam:
+            if (newValue > 0.f) {
+                invertLeft = true;
+                invertLeftMultipler = -1.f;
+            } else {
+                invertLeft = false;
+                invertLeftMultipler = 1.f;
+            }
+            break;
+            
+        case invertRightParam:
+            if (newValue > 0.f) {
+                invertRight = true;
+                invertRightMultipler = -1.f;
+            } else {
+                invertRight = false;
+                invertRightMultipler = 1.f;
             }
             break;
             
@@ -94,6 +124,12 @@ const String SimpleGainAudioProcessor::getParameterName (int index)
             
         case bypassParam:
             return "Bypass";
+            
+        case invertLeftParam:
+            return "Invert Left";
+            
+        case invertRightParam:
+            return "Invert Right";
             
         default:
             return String::empty;
@@ -206,13 +242,15 @@ void SimpleGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
              */
 
             /* Constant Power Pan Law (-3db center, thus THREE_DB used to raise center):
-                leftChannel[i] = leftChannel[i] * cosf(pan * M_PI_2) * THREE_DB;
+                leftChannel[i] s= leftChannel[i] * cosf(pan * M_PI_2) * THREE_DB;
                 rightChannel[i] = rightChannel[i] * sinf(pan * M_PI_2) * THREE_DB;
              */
             
             
-            leftChannel[i] = leftChannel[i] * gain_db * cosf(pan * M_PI_2) * THREE_DB;
-            rightChannel[i] = rightChannel[i] * gain_db * sinf(pan * M_PI_2) * THREE_DB;
+            /* Phase inverting is simple, just multiply the incoming signal for a channel by -1.f */
+            
+            leftChannel[i] = invertLeftMultipler * leftChannel[i] * gainDb * cosf(pan * M_PI_2) * THREE_DB;
+            rightChannel[i] = invertRightMultipler * rightChannel[i] * gainDb * sinf(pan * M_PI_2) * THREE_DB;
         }
         
         // In case we have more outputs than inputs, we'll clear any output

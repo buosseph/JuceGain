@@ -77,8 +77,8 @@ private:
     const float DEFAULT_PAN_CENTER = 0.5f;
     
     // Parameter values
-    float gain, gain_db, pan;
-    bool bypass;
+    float gain, gainDb, pan, invertLeftMultipler, invertRightMultipler;
+    bool bypass, invertLeft, invertRight;
     
     // Parameter indices
     enum Parameters
@@ -86,6 +86,8 @@ private:
         gainParam,
         panParam,
         bypassParam,
+        invertLeftParam,
+        invertRightParam,
         
         totalNumParams
     };
