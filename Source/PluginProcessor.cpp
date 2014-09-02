@@ -205,14 +205,14 @@ void SimpleGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
                 rightChannel[i] = rightChannel[i] * pan;
              */
 
-            /* Constant Power Pan Law (-3db center, not constant):
-             leftChannel[i] = leftChannel[i] * sinf(pan * M_PI_2);
-             rightChannel[i] = rightChannel[i] * cosf(pan * M_PI_2);
+            /* Constant Power Pan Law (-3db center, thus THREE_DB used to raise center):
+                leftChannel[i] = leftChannel[i] * cosf(pan * M_PI_2) * THREE_DB;
+                rightChannel[i] = rightChannel[i] * sinf(pan * M_PI_2) * THREE_DB;
              */
             
             
-            leftChannel[i] = leftChannel[i] * gain_db * sinf(pan * M_PI_2);
-            rightChannel[i] = rightChannel[i] * gain_db * cosf(pan * M_PI_2);
+            leftChannel[i] = leftChannel[i] * gain_db * cosf(pan * M_PI_2) * THREE_DB;
+            rightChannel[i] = rightChannel[i] * gain_db * sinf(pan * M_PI_2) * THREE_DB;
         }
         
         // In case we have more outputs than inputs, we'll clear any output

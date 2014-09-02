@@ -72,6 +72,8 @@ private:
     // Default values
     const float GAIN_EXP_CONST = logf(10.f/.1f);
     const float DEFAULT_GAIN = .5f;
+    
+    const float THREE_DB = 1.41254f;
     const float DEFAULT_PAN_CENTER = 0.5f;
     
     // Parameter values
