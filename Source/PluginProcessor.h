@@ -69,12 +69,13 @@ public:
 private:
     //==============================================================================
     
-    const float DEAFAULT_GAIN_MULTIPLER = 0.5f; // Converts to db scale once processing begins
-    const float PAN_CENTER = 0.5f;
+    // Default values
     const float GAIN_EXP_CONST = logf(10.f/.1f);
+    const float DEFAULT_GAIN = .5f;
+    const float DEFAULT_PAN_CENTER = 0.5f;
     
     // Parameter values
-    float gain, pan;
+    float gain, gain_db, pan;
     bool bypass;
     
     // Parameter indices

@@ -16,8 +16,9 @@
 //==============================================================================
 SimpleGainAudioProcessor::SimpleGainAudioProcessor()
 {
-    gain = DEAFAULT_GAIN_MULTIPLER;
-    pan = PAN_CENTER;
+    gain = DEFAULT_GAIN;
+    gain_db = .1f * expf( GAIN_EXP_CONST * DEFAULT_GAIN);
+    pan = DEFAULT_PAN_CENTER;
     bypass = false;
 }
 
@@ -59,8 +60,9 @@ void SimpleGainAudioProcessor::setParameter (int index, float newValue)
     // newValue always between 0.0f and 1.0f
     switch (index) {
         case gainParam:
+            gain = newValue;
             // Map 0.-1. to .1-10.  (10. = 20db, .1 = -20db)
-            gain = .1f * expf( GAIN_EXP_CONST * newValue);
+            gain_db = .1f * expf( GAIN_EXP_CONST * newValue);
             break;
         
         case panParam:
@@ -198,9 +200,19 @@ void SimpleGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
         
         for (int i = 0; i < buffer.getNumSamples(); i++) {
             
-            // Linear pan only temporary
-            leftChannel[i] = leftChannel[i] * gain * (1.f - pan);
-            rightChannel[i] = rightChannel[i] * gain * pan;
+            /* Linear Pan Law (-6db center, not constant):
+                leftChannel[i] = leftChannel[i] * (1.f - pan);
+                rightChannel[i] = rightChannel[i] * pan;
+             */
+
+            /* Constant Power Pan Law (-3db center, not constant):
+             leftChannel[i] = leftChannel[i] * sinf(pan * M_PI_2);
+             rightChannel[i] = rightChannel[i] * cosf(pan * M_PI_2);
+             */
+            
+            
+            leftChannel[i] = leftChannel[i] * gain_db * sinf(pan * M_PI_2);
+            rightChannel[i] = rightChannel[i] * gain_db * cosf(pan * M_PI_2);
         }
         
         // In case we have more outputs than inputs, we'll clear any output
