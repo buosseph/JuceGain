@@ -10,8 +10,8 @@
 
 */
 
-#ifndef __APPHEADERFILE_HVWL54__
-#define __APPHEADERFILE_HVWL54__
+#ifndef __APPHEADERFILE_LDGEYT__
+#define __APPHEADERFILE_LDGEYT__
 
 #include "AppConfig.h"
 #include "modules/juce_audio_basics/juce_audio_basics.h"
@@ -35,11 +35,13 @@
  using namespace juce;
 #endif
 
+#if ! JUCE_DONT_DECLARE_PROJECTINFO
 namespace ProjectInfo
 {
-    const char* const  projectName    = "SimpleGain";
+    const char* const  projectName    = "JuceGain";
     const char* const  versionString  = "1.0.0";
     const int          versionNumber  = 0x10000;
 }
+#endif
 
-#endif   // __APPHEADERFILE_HVWL54__
+#endif   // __APPHEADERFILE_LDGEYT__

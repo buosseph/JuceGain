@@ -17,12 +17,12 @@
 //==============================================================================
 /**
 */
-class SimpleGainAudioProcessor  : public AudioProcessor
+class JuceGainAudioProcessor  : public AudioProcessor
 {
 public:
     //==============================================================================
-    SimpleGainAudioProcessor();
-    ~SimpleGainAudioProcessor();
+    JuceGainAudioProcessor();
+    ~JuceGainAudioProcessor();
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock);
@@ -77,8 +77,8 @@ private:
     const float DEFAULT_PAN_CENTER = 0.5f;
     
     // Parameter values
-    float gain, gainDb, pan, invertLeftMultipler, invertRightMultipler;
-    bool bypass, invertLeft, invertRight;
+    float gain, gain_db, pan;
+    bool bypass;
     
     // Parameter indices
     enum Parameters
@@ -86,15 +86,13 @@ private:
         gainParam,
         panParam,
         bypassParam,
-        invertLeftParam,
-        invertRightParam,
         
         totalNumParams
     };
     
     float calculateGainMultiplier(float gain);
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleGainAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JuceGainAudioProcessor)
 };
 
 #endif  // PLUGINPROCESSOR_H_INCLUDED

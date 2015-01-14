@@ -11,8 +11,8 @@
 
 */
 
-#ifndef __JUCE_APPCONFIG_HVWL54__
-#define __JUCE_APPCONFIG_HVWL54__
+#ifndef __JUCE_APPCONFIG_LDGEYT__
+#define __JUCE_APPCONFIG_LDGEYT__
 
 //==============================================================================
 // [BEGIN_USER_CODE_SECTION]
@@ -213,10 +213,10 @@
  #define JucePlugin_Build_AAX              0
 #endif
 #ifndef  JucePlugin_Name
- #define JucePlugin_Name                   "SimpleGain"
+ #define JucePlugin_Name                   "JuceGain"
 #endif
 #ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "SimpleGain"
+ #define JucePlugin_Desc                   "JuceGain"
 #endif
 #ifndef  JucePlugin_Manufacturer
  #define JucePlugin_Manufacturer           "brianuosseph"
@@ -240,7 +240,7 @@
  #define JucePlugin_MaxNumOutputChannels   2
 #endif
 #ifndef  JucePlugin_PreferredChannelConfigurations
- #define JucePlugin_PreferredChannelConfigurations  {1, 1}, {2, 2}
+ #define JucePlugin_PreferredChannelConfigurations  {2, 2}
 #endif
 #ifndef  JucePlugin_IsSynth
  #define JucePlugin_IsSynth                0
@@ -279,16 +279,16 @@
  #define JucePlugin_AUSubType              JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_AUExportPrefix
- #define JucePlugin_AUExportPrefix         SimpleGainAU
+ #define JucePlugin_AUExportPrefix         JuceGainAU
 #endif
 #ifndef  JucePlugin_AUExportPrefixQuoted
- #define JucePlugin_AUExportPrefixQuoted   "SimpleGainAU"
+ #define JucePlugin_AUExportPrefixQuoted   "JuceGainAU"
 #endif
 #ifndef  JucePlugin_AUManufacturerCode
  #define JucePlugin_AUManufacturerCode     JucePlugin_ManufacturerCode
 #endif
 #ifndef  JucePlugin_CFBundleIdentifier
- #define JucePlugin_CFBundleIdentifier     com.brianuosseph.SimpleGain
+ #define JucePlugin_CFBundleIdentifier     com.brianuosseph.JuceGain
 #endif
 #ifndef  JucePlugin_RTASCategory
  #define JucePlugin_RTASCategory           ePlugInCategory_None
@@ -306,7 +306,7 @@
  #define JucePlugin_RTASDisableMultiMono   0
 #endif
 #ifndef  JucePlugin_AAXIdentifier
- #define JucePlugin_AAXIdentifier          com.yourcompany.SimpleGain
+ #define JucePlugin_AAXIdentifier          com.brianuosseph.JuceGain
 #endif
 #ifndef  JucePlugin_AAXManufacturerCode
  #define JucePlugin_AAXManufacturerCode    JucePlugin_ManufacturerCode
@@ -324,4 +324,4 @@
  #define JucePlugin_AAXDisableMultiMono    0
 #endif
 
-#endif  // __JUCE_APPCONFIG_HVWL54__
+#endif  // __JUCE_APPCONFIG_LDGEYT__

@@ -14,35 +14,31 @@
 
 
 //==============================================================================
-SimpleGainAudioProcessor::SimpleGainAudioProcessor()
+JuceGainAudioProcessor::JuceGainAudioProcessor()
 {
     gain = DEFAULT_GAIN;
-    gainDb = .1f * expf( GAIN_EXP_CONST * DEFAULT_GAIN);
+    gain_db = .1f * expf( GAIN_EXP_CONST * DEFAULT_GAIN);
     pan = DEFAULT_PAN_CENTER;
     bypass = false;
-    invertLeft = false;
-    invertLeftMultipler = 1.f;
-    invertRight = false;
-    invertRightMultipler = 1.f;
 }
 
-SimpleGainAudioProcessor::~SimpleGainAudioProcessor()
+JuceGainAudioProcessor::~JuceGainAudioProcessor()
 {
 }
 
 //==============================================================================
-const String SimpleGainAudioProcessor::getName() const
+const String JuceGainAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-int SimpleGainAudioProcessor::getNumParameters()
+int JuceGainAudioProcessor::getNumParameters()
 {
     // Return total number of parameters
     return totalNumParams;
 }
 
-float SimpleGainAudioProcessor::getParameter (int index)
+float JuceGainAudioProcessor::getParameter (int index)
 {
     switch (index) {
         case gainParam:
@@ -54,25 +50,19 @@ float SimpleGainAudioProcessor::getParameter (int index)
         case bypassParam:
             return bypass;
             
-        case invertLeftParam:
-            return invertLeft;
-            
-        case invertRightParam:
-            return invertRight;
-            
         default:
             return 0.0f;
     }
 }
 
-void SimpleGainAudioProcessor::setParameter (int index, float newValue)
+void JuceGainAudioProcessor::setParameter (int index, float newValue)
 {
     // newValue always between 0.0f and 1.0f
     switch (index) {
         case gainParam:
             gain = newValue;
             // Map 0.-1. to .1-10.  (10. = 20db, .1 = -20db)
-            gainDb = .1f * expf( GAIN_EXP_CONST * newValue);
+            gain_db = .1f * expf( GAIN_EXP_CONST * newValue);
             break;
         
         case panParam:
@@ -88,32 +78,12 @@ void SimpleGainAudioProcessor::setParameter (int index, float newValue)
             }
             break;
             
-        case invertLeftParam:
-            if (newValue > 0.f) {
-                invertLeft = true;
-                invertLeftMultipler = -1.f;
-            } else {
-                invertLeft = false;
-                invertLeftMultipler = 1.f;
-            }
-            break;
-            
-        case invertRightParam:
-            if (newValue > 0.f) {
-                invertRight = true;
-                invertRightMultipler = -1.f;
-            } else {
-                invertRight = false;
-                invertRightMultipler = 1.f;
-            }
-            break;
-            
         default:
             break;
     }
 }
 
-const String SimpleGainAudioProcessor::getParameterName (int index)
+const String JuceGainAudioProcessor::getParameterName (int index)
 {
     switch (index) {
         case gainParam:
@@ -125,43 +95,37 @@ const String SimpleGainAudioProcessor::getParameterName (int index)
         case bypassParam:
             return "Bypass";
             
-        case invertLeftParam:
-            return "Invert Left";
-            
-        case invertRightParam:
-            return "Invert Right";
-            
         default:
             return String::empty;
     }
 }
 
-const String SimpleGainAudioProcessor::getParameterText (int index)
+const String JuceGainAudioProcessor::getParameterText (int index)
 {
     return String(getParameter(index), 2);
 }
 
-const String SimpleGainAudioProcessor::getInputChannelName (int channelIndex) const
+const String JuceGainAudioProcessor::getInputChannelName (int channelIndex) const
 {
     return String (channelIndex + 1);
 }
 
-const String SimpleGainAudioProcessor::getOutputChannelName (int channelIndex) const
+const String JuceGainAudioProcessor::getOutputChannelName (int channelIndex) const
 {
     return String (channelIndex + 1);
 }
 
-bool SimpleGainAudioProcessor::isInputChannelStereoPair (int index) const
+bool JuceGainAudioProcessor::isInputChannelStereoPair (int index) const
 {
     return true;
 }
 
-bool SimpleGainAudioProcessor::isOutputChannelStereoPair (int index) const
+bool JuceGainAudioProcessor::isOutputChannelStereoPair (int index) const
 {
     return true;
 }
 
-bool SimpleGainAudioProcessor::acceptsMidi() const
+bool JuceGainAudioProcessor::acceptsMidi() const
 {
    #if JucePlugin_WantsMidiInput
     return true;
@@ -170,7 +134,7 @@ bool SimpleGainAudioProcessor::acceptsMidi() const
    #endif
 }
 
-bool SimpleGainAudioProcessor::producesMidi() const
+bool JuceGainAudioProcessor::producesMidi() const
 {
    #if JucePlugin_ProducesMidiOutput
     return true;
@@ -179,53 +143,53 @@ bool SimpleGainAudioProcessor::producesMidi() const
    #endif
 }
 
-bool SimpleGainAudioProcessor::silenceInProducesSilenceOut() const
+bool JuceGainAudioProcessor::silenceInProducesSilenceOut() const
 {
     return false;
 }
 
-double SimpleGainAudioProcessor::getTailLengthSeconds() const
+double JuceGainAudioProcessor::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int SimpleGainAudioProcessor::getNumPrograms()
+int JuceGainAudioProcessor::getNumPrograms()
 {
     return 0;
 }
 
-int SimpleGainAudioProcessor::getCurrentProgram()
+int JuceGainAudioProcessor::getCurrentProgram()
 {
     return 0;
 }
 
-void SimpleGainAudioProcessor::setCurrentProgram (int index)
+void JuceGainAudioProcessor::setCurrentProgram (int index)
 {
 }
 
-const String SimpleGainAudioProcessor::getProgramName (int index)
+const String JuceGainAudioProcessor::getProgramName (int index)
 {
     return String::empty;
 }
 
-void SimpleGainAudioProcessor::changeProgramName (int index, const String& newName)
+void JuceGainAudioProcessor::changeProgramName (int index, const String& newName)
 {
 }
 
 //==============================================================================
-void SimpleGainAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void JuceGainAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 }
 
-void SimpleGainAudioProcessor::releaseResources()
+void JuceGainAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
-void SimpleGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
+void JuceGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
@@ -242,15 +206,13 @@ void SimpleGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
              */
 
             /* Constant Power Pan Law (-3db center, thus THREE_DB used to raise center):
-                leftChannel[i] s= leftChannel[i] * cosf(pan * M_PI_2) * THREE_DB;
+                leftChannel[i] = leftChannel[i] * cosf(pan * M_PI_2) * THREE_DB;
                 rightChannel[i] = rightChannel[i] * sinf(pan * M_PI_2) * THREE_DB;
              */
             
             
-            /* Phase inverting is simple, just multiply the incoming signal for a channel by -1.f */
-            
-            leftChannel[i] = invertLeftMultipler * leftChannel[i] * gainDb * cosf(pan * M_PI_2) * THREE_DB;
-            rightChannel[i] = invertRightMultipler * rightChannel[i] * gainDb * sinf(pan * M_PI_2) * THREE_DB;
+            leftChannel[i] = leftChannel[i] * gain_db * cosf(pan * M_PI_2) * THREE_DB;
+            rightChannel[i] = rightChannel[i] * gain_db * sinf(pan * M_PI_2) * THREE_DB;
         }
         
         // In case we have more outputs than inputs, we'll clear any output
@@ -267,26 +229,27 @@ void SimpleGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
 }
 
 //==============================================================================
-bool SimpleGainAudioProcessor::hasEditor() const
+bool JuceGainAudioProcessor::hasEditor() const
 {
     // Temporarily false until work on GUI begins
     return false; // (change this to false if you choose to not supply an editor)
 }
 
-AudioProcessorEditor* SimpleGainAudioProcessor::createEditor()
+AudioProcessorEditor* JuceGainAudioProcessor::createEditor()
 {
-    return new SimpleGainAudioProcessorEditor (this);
+    return new JuceGainAudioProcessorEditor (*this);
 }
 
+
 //==============================================================================
-void SimpleGainAudioProcessor::getStateInformation (MemoryBlock& destData)
+void JuceGainAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void SimpleGainAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void JuceGainAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
@@ -296,5 +259,5 @@ void SimpleGainAudioProcessor::setStateInformation (const void* data, int sizeIn
 // This creates new instances of the plugin..
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new SimpleGainAudioProcessor();
+    return new JuceGainAudioProcessor();
 }
