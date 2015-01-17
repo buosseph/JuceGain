@@ -210,8 +210,7 @@ void JuceGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
                 rightChannel[i] = rightChannel[i] * sinf(pan * M_PI_2) * THREE_DB;
              */
             
-            
-            leftChannel[i] = leftChannel[i] * gain_db * cosf(pan * M_PI_2) * THREE_DB;
+            leftChannel[i]  = leftChannel[i]  * gain_db * cosf(pan * M_PI_2) * THREE_DB;
             rightChannel[i] = rightChannel[i] * gain_db * sinf(pan * M_PI_2) * THREE_DB;
         }
         

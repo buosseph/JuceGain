@@ -15,8 +15,8 @@
 //==============================================================================
 /**
 */
-class JuceGainAudioProcessorEditor : public AudioProcessorEditor
-//                                     ,public Timer
+class JuceGainAudioProcessorEditor : public AudioProcessorEditor,
+                                     public SliderListener
 {
 public:
     JuceGainAudioProcessorEditor (JuceGainAudioProcessor&);
@@ -25,8 +25,18 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
-
+    void sliderValueChanged(Slider* movedSlider);
+    
 private:
+    const int WIDTH     = 240;
+    const int HEIGHT    = 320;
+    const int CENTER_X  = WIDTH/2;
+    const int CENTER_Y  = HEIGHT/2;
+    
+    // Controls
+    ScopedPointer<Slider> gainControl;
+    ScopedPointer<Slider> panControl;
+
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     JuceGainAudioProcessor& processor;

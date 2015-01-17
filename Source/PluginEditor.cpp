@@ -13,27 +13,63 @@
 JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcessor& p)
 : AudioProcessorEditor (&p), processor (p)
 {
+    addAndMakeVisible (gainControl = new Slider("Gain"));
+    gainControl->setTextBoxStyle (Slider::NoTextBox, false, 60, 20);
+    gainControl->setValue (0.5);
+    gainControl->setRange (0., 1., 0.05);
+    gainControl->setSliderStyle (Slider::RotaryVerticalDrag);
+    gainControl->setColour (Slider::thumbColourId, Colours::blue);
+    gainControl->setColour (Slider::rotarySliderFillColourId, Colour (0xff0000e0));
+    gainControl->setColour (Slider::rotarySliderOutlineColourId, Colour (0x660000ff));
+    gainControl->setBounds (CENTER_X - (60/2), CENTER_Y-60 - (60/2), 60, 60);
+    gainControl->addListener (this);
+    
+    addAndMakeVisible (panControl = new Slider("Pan"));
+    panControl->setTextBoxStyle (Slider::NoTextBox, false, 60, 20);
+    panControl->setValue (0.5);
+    panControl->setRange (0., 1., 0.05);
+    panControl->setSliderStyle (Slider::RotaryVerticalDrag);
+    panControl->setColour (Slider::thumbColourId, Colours::lime);
+    panControl->setColour (Slider::rotarySliderFillColourId, Colour (0xff00e000));
+    panControl->setColour (Slider::rotarySliderOutlineColourId, Colour (0x6600ff00));
+    panControl->setBounds (CENTER_X - (60/2), CENTER_Y+60 - (60/2), 60, 60);
+    panControl->addListener (this);
+    
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    setSize (WIDTH, HEIGHT);
 }
 
 JuceGainAudioProcessorEditor::~JuceGainAudioProcessorEditor()
 {
+    // Deallocate controls
+    gainControl = nullptr;
+    panControl  = nullptr;
 }
 
 //==============================================================================
 void JuceGainAudioProcessorEditor::paint (Graphics& g)
 {
     g.fillAll (Colours::black);
-    
-    g.setColour (Colours::whitesmoke);
-    g.setFont (16.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), Justification::centred, 1);
 }
 
 void JuceGainAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+}
+
+void JuceGainAudioProcessorEditor::sliderValueChanged(Slider* movedSlider) {
+    if (movedSlider == gainControl) {
+        processor.setParameter(
+            JuceGainAudioProcessor::Parameters::gainParam,
+            movedSlider->getValue()
+        );
+    }
+    else if (movedSlider == panControl) {
+        processor.setParameter(
+            JuceGainAudioProcessor::Parameters::panParam,
+            movedSlider->getValue()
+        );
+    }
 }
