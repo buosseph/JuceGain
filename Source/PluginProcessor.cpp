@@ -232,7 +232,7 @@ void JuceGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
 bool JuceGainAudioProcessor::hasEditor() const
 {
     // Temporarily false until work on GUI begins
-    return false; // (change this to false if you choose to not supply an editor)
+    return true; // (change this to false if you choose to not supply an editor)
 }
 
 AudioProcessorEditor* JuceGainAudioProcessor::createEditor()

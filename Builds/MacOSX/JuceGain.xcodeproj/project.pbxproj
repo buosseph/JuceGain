@@ -1328,10 +1328,10 @@
 		33B4588B007B38902C05C732 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				84FD6AF4EF0B04CF7D3EF2A9 /* PluginProcessor.cpp */,
-				AA647236879C10076BC02467 /* PluginProcessor.h */,
 				9C2D1CCBFF350911F7BA3B6D /* PluginEditor.cpp */,
 				6489EE1408F40979EF271743 /* PluginEditor.h */,
+				84FD6AF4EF0B04CF7D3EF2A9 /* PluginProcessor.cpp */,
+				AA647236879C10076BC02467 /* PluginProcessor.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -2832,8 +2832,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA1C09269D61DFBC7B547115 /* PluginProcessor.cpp in Sources */,
 				F98712D6C944D4CE62292606 /* PluginEditor.cpp in Sources */,
+				DA1C09269D61DFBC7B547115 /* PluginProcessor.cpp in Sources */,
 				BDC7D485DB8AE5D968872DE4 /* juce_AAX_Wrapper.cpp in Sources */,
 				A50513AA4C3802DD8E1A6379 /* juce_AAX_Wrapper.mm in Sources */,
 				47AE99437FA99539E5BD9906 /* juce_AU_Wrapper.mm in Sources */,
@@ -2887,6 +2887,7 @@
 				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					"\"~/SDKs/VST3 SDK\"",
+					"~/SDKs/vstsdk2.4",
 					../../JuceLibraryCode,
 					"\"../../../../Course Work/S15/musi4545/JUCE-OSX/modules\"",
 					"$(inherited)",
@@ -2924,6 +2925,7 @@
 				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					"\"~/SDKs/VST3 SDK\"",
+					"~/SDKs/vstsdk2.4",
 					../../JuceLibraryCode,
 					"\"../../../../Course Work/S15/musi4545/JUCE-OSX/modules\"",
 					"$(inherited)",
