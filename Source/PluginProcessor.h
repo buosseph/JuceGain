@@ -41,6 +41,7 @@ public:
 
     float getParameter (int index);
     void setParameter (int index, float newValue);
+    float getParameterDefaultValue(int index);
 
     const String getParameterName (int index);
     const String getParameterText (int index);
@@ -72,24 +73,28 @@ public:
     {
         gainParam,
         panParam,
-        bypassParam,
-        
+//        bypassParam,
         totalNumParams
     };
+    
+    // User parameters
+    float uGain, uGainDb, uPan;
     
 private:
     //==============================================================================
     
     // Default values
     const float GAIN_EXP_CONST = logf(10.f/.1f);
-    const float DEFAULT_GAIN = .5f;
+    const float DEFAULT_GAIN    = .5f;
+    const float THREE_DB        = 1.41254f;
+    const float DEFAULT_PAN     = .5f;
 
-    const float THREE_DB = 1.41254f;
-    const float DEFAULT_PAN_CENTER = 0.5f;
+    // Algorithm parameters
+    float aGain, aGainDb, aPan;
+//    bool bypass;
 
-    // Parameter values
-    float gain, gain_db, pan;
-    bool bypass;
+    // In-loop values
+    float leftPanGain, rightPanGain;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JuceGainAudioProcessor)
 };
