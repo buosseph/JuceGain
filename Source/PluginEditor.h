@@ -41,38 +41,39 @@ class JuceGainAudioProcessorEditor  : public AudioProcessorEditor,
 {
 public:
     //==============================================================================
-    JuceGainAudioProcessorEditor (JuceGainAudioProcessor&);
+    JuceGainAudioProcessorEditor (JuceGainAudioProcessor& p);
     ~JuceGainAudioProcessorEditor();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void timerCallback();
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
-    void timerCallback();
+
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    //[/UserVariables]
 
-    //==============================================================================
-    ScopedPointer<Slider>   gainDbSlider;
-    ScopedPointer<Slider>   panSlider;
-    ScopedPointer<Label>    gainDbLabel;
-
-    
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     JuceGainAudioProcessor& processor;
-    
+
     JuceGainAudioProcessor& getProcessor() const
     {
         return static_cast<JuceGainAudioProcessor&> (processor);
     }
-    
+
+    //[/UserVariables]
+
+    //==============================================================================
+    ScopedPointer<Slider> gainDbSlider;
+    ScopedPointer<Slider> panSlider;
+
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JuceGainAudioProcessorEditor)
 };

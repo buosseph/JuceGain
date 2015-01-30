@@ -32,38 +32,34 @@ JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcess
     : AudioProcessorEditor (&p), processor (p)
 {
     addAndMakeVisible (gainDbSlider = new Slider ("Gain Slider"));
-//    gainDbSlider->setRange (0, 1, 0.01);
-    gainDbSlider->setRange (-96, 10);     // 0db = 1.f  Causes GUI issues
+    gainDbSlider->setTooltip (TRANS("Adjusts output volume"));
+    gainDbSlider->setRange (-96, 10, 0.01);
     gainDbSlider->setSliderStyle (Slider::LinearVertical);
     gainDbSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 60, 20);
     gainDbSlider->setColour (Slider::thumbColourId, Colours::grey);
     gainDbSlider->addListener (this);
 
-    addAndMakeVisible (panSlider = new Slider ("Pan Knob"));
-    panSlider->setRange (0, 1, 0.005);             // L = 0.f, R = 1.f
-//    panSlider->setRange (-50, 50);       // L = -50, R = 50   Causes GUI issues
-    panSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    addAndMakeVisible (panSlider = new Slider ("Pan Rotary"));
+    panSlider->setTooltip (TRANS("Adjusts signal panning"));
+    panSlider->setRange (-50, 50, 1);
+    panSlider->setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
     panSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 60, 20);
     panSlider->setColour (Slider::rotarySliderFillColourId, Colours::grey);
     panSlider->addListener (this);
 
-    addAndMakeVisible (gainDbLabel = new Label ("Gain Label",
-                                                TRANS("db")));
-    gainDbLabel->setFont (Font (15.00f, Font::plain));
-    gainDbLabel->setJustificationType (Justification::centredLeft);
-    gainDbLabel->setEditable (false, false, false);
-    gainDbLabel->setColour (Label::textColourId, Colours::white);
-    gainDbLabel->setColour (TextEditor::textColourId, Colours::black);
-    gainDbLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
 
     //[UserPreSize]
+    gainDbSlider->setTextValueSuffix("db");
+
+    gainDbSlider->setDoubleClickReturnValue(true, 0);
+    panSlider->setDoubleClickReturnValue(true, 0);
     //[/UserPreSize]
 
     setSize (240, 320);
-    startTimer(50);
+
 
     //[Constructor] You can add your own custom stuff here..
+    startTimer(50);
     //[/Constructor]
 }
 
@@ -74,10 +70,10 @@ JuceGainAudioProcessorEditor::~JuceGainAudioProcessorEditor()
 
     gainDbSlider = nullptr;
     panSlider = nullptr;
-    gainDbLabel = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
+    deleteAllChildren();
     //[/Destructor]
 }
 
@@ -100,7 +96,6 @@ void JuceGainAudioProcessorEditor::resized()
 
     gainDbSlider->setBounds (24, 24, 60, 260);
     panSlider->setBounds (152, 192, 60, 90);
-    gainDbLabel->setBounds (88, 266, 32, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -115,7 +110,8 @@ void JuceGainAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMove
         //[UserSliderCode_gainDbSlider] -- add your slider handling code here..
         processor.setParameterNotifyingHost(
             JuceGainAudioProcessor::Parameters::gainParam,
-            (float) sliderThatWasMoved->getValue()
+//            (float) sliderThatWasMoved->getValue()
+            (float) (sliderThatWasMoved->getValue() + 96.f) / 106.f // map to 0.-1.f (uGain)
         );
         //[/UserSliderCode_gainDbSlider]
     }
@@ -124,7 +120,7 @@ void JuceGainAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMove
         //[UserSliderCode_panSlider] -- add your slider handling code here..
         processor.setParameterNotifyingHost(
             JuceGainAudioProcessor::Parameters::panParam,
-            (float) sliderThatWasMoved->getValue()
+            (float) (sliderThatWasMoved->getValue() + 50.f) / 100.f // map to 0.-1.f
         );
         //[/UserSliderCode_panSlider]
     }
@@ -137,8 +133,10 @@ void JuceGainAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMove
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void JuceGainAudioProcessorEditor::timerCallback() {
-    JuceGainAudioProcessor& ourProcessor = getProcessor();
+    // Timer conflicts cause UI stuttering
+//    JuceGainAudioProcessor& ourProcessor = getProcessor();
 
+    /*
     gainDbSlider->setValue(
         ourProcessor.uGainDb,
         dontSendNotification
@@ -147,6 +145,7 @@ void JuceGainAudioProcessorEditor::timerCallback() {
         ourProcessor.uPan,
         dontSendNotification
     );
+    */
 }
 //[/MiscUserCode]
 
@@ -162,25 +161,20 @@ BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="JuceGainAudioProcessorEditor"
                  componentName="" parentClasses="public AudioProcessorEditor, public Timer"
-                 constructorParams="JuceGainAudioProcessor* processor" variableInitialisers="JuceGainAudioProcessorEditor(processor)"
+                 constructorParams="JuceGainAudioProcessor&amp; p" variableInitialisers="AudioProcessorEditor (&amp;p), processor (p)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="1" initialWidth="240" initialHeight="320">
   <BACKGROUND backgroundColour="ff222222"/>
   <SLIDER name="Gain Slider" id="869ad7b78e733129" memberName="gainDbSlider"
-          virtualName="" explicitFocusOrder="0" pos="24 24 60 260" thumbcol="ff808080"
-          min="0" max="1" int="0.010000000000000000208" style="LinearVertical"
+          virtualName="" explicitFocusOrder="0" pos="24 24 60 260" tooltip="Adjusts output volume"
+          thumbcol="ff808080" min="-96" max="10" int="0.010000000000000000208"
+          style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="60" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Pan Rotary" id="7de69cf8fd092825" memberName="panSlider"
+          virtualName="" explicitFocusOrder="0" pos="152 192 60 90" tooltip="Adjusts signal panning"
+          rotarysliderfill="ff808080" min="-50" max="50" int="1" style="RotaryHorizontalVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="60"
           textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="Pan Rotary" id="7b6904ab8ead2ca2" memberName="panSlider"
-          virtualName="" explicitFocusOrder="0" pos="152 192 60 90" rotarysliderfill="ff808080"
-          min="0" max="1" int="0.010000000000000000208" style="RotaryHorizontalVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="60"
-          textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="Gain Label" id="da142ff8b5140aee" memberName="gainDbLabel"
-         virtualName="" explicitFocusOrder="0" pos="88 266 32 16" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="db" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

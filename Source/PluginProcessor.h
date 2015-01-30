@@ -42,7 +42,8 @@ public:
     float getParameter (int index);
     void setParameter (int index, float newValue);
     float getParameterDefaultValue(int index);
-
+    int getParameterNumSteps(int index);
+    
     const String getParameterName (int index);
     const String getParameterText (int index);
 
@@ -73,25 +74,23 @@ public:
     {
         gainParam,
         panParam,
-//        bypassParam,
         totalNumParams
     };
     
     // User parameters
-    float uGain, uGainDb, uPan;
+    float uGain, uPan;          // Must be 0.-1.
     
 private:
     //==============================================================================
     
     // Default values
-    const float GAIN_EXP_CONST = logf(10.f/.1f);
-    const float DEFAULT_GAIN    = .5f;
+    const float DEFAULT_U_GAIN  = 96.f/106.f;
+    const float DEFAULT_A_GAIN  = 1.f;
     const float THREE_DB        = 1.41254f;
-    const float DEFAULT_PAN     = .5f;
+    const float DEFAULT_PAN     = 0.5f;
 
     // Algorithm parameters
-    float aGain, aGainDb, aPan;
-//    bool bypass;
+    float aGain, aPan;
 
     // In-loop values
     float leftPanGain, rightPanGain;

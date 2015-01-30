@@ -16,14 +16,13 @@
 //==============================================================================
 JuceGainAudioProcessor::JuceGainAudioProcessor()
 {
-    aGain   = uGain     = DEFAULT_GAIN;
-    aGainDb = uGainDb   = 20. * log10f(uGain);
+    uGain               = DEFAULT_U_GAIN;
+    aGain               = DEFAULT_A_GAIN;
     aPan    = uPan      = DEFAULT_PAN;
-//    bypass = false;
 
-    // Pan works perfectly, gainDb does not
-    leftPanGain     = aGainDb * cosf(aPan * M_PI_2) * THREE_DB;
-    rightPanGain    = aGainDb * sinf(aPan * M_PI_2) * THREE_DB;
+    // Do not use decibels in multiplier! Only uV (unit voltage)
+    leftPanGain     = aGain * cosf(aPan * M_PI_2) * THREE_DB;
+    rightPanGain    = aGain * sinf(aPan * M_PI_2) * THREE_DB;
 }
 
 JuceGainAudioProcessor::~JuceGainAudioProcessor()
@@ -45,54 +44,49 @@ int JuceGainAudioProcessor::getNumParameters()
 float JuceGainAudioProcessor::getParameter (int index)
 {
     switch (index) {
-        case gainParam:     return uGain;   // uGain or uGainDb?
-        case panParam:      return uPan;
-//        case bypassParam:   return bypass;
-        default:            return 0.f;
+        case gainParam:       return uGain;
+        case panParam:          return uPan;
+        default:                return 0.f;
     }
 }
 
 void JuceGainAudioProcessor::setParameter (int index, float newValue)
 {
+    // newValue must always be from 0.f - 1.f
+    
     switch (index) {
-        case gainParam:         // Range: [-96, +10], in decibels
-            aGainDb = uGainDb = newValue;
-            aGain = uGain = powf(10.f, aGainDb/20.f);
-            
-//            aGain = uGain = newValue;
-            // Map 0.-1. to .1-10.  (10. = 20db, .1 = -20db)
-//            aGainDb = uGainDb = .1f * expf( GAIN_EXP_CONST * newValue);
-//            aGainDb = uGainDb = 20. * log10f(uGain);
+        case gainParam:     // GUI Range: [-96, +10], in decibels
+            uGain = newValue;
+            aGain = powf(10.f, (106.f * uGain - 96.f) / 20.f);
             break;
         
-        case panParam:          // Range: [-50, +50]
-//            uPan = (newValue + 50.f) / 100.f;
-//            aPan = uPan;    // L = 0., R = 1.
-            aPan = uPan = newValue;
+        case panParam:      // GUI Range: [-50, +50]
+            uPan = newValue;
+            aPan = uPan;    // L = 0., R = 1.
             break;
-            
-//        case bypassParam:
-//            if (newValue > 0.f) {
-//                bypass = true;
-//            } else {
-//                bypass = false;
-//            }
-//            break;
             
         default:
             break;
     }
     
-    // Do not use decibels in multiplier!
     leftPanGain     = aGain * cosf(aPan * M_PI_2) * THREE_DB;
     rightPanGain    = aGain * sinf(aPan * M_PI_2) * THREE_DB;
 }
 
 float JuceGainAudioProcessor::getParameterDefaultValue(int index) {
     switch (index) {
-        case gainParam:     return DEFAULT_GAIN;
+        case gainParam:     return DEFAULT_U_GAIN;
         case panParam:      return DEFAULT_PAN;
         default:            return 0.f;
+    }
+}
+
+int JuceGainAudioProcessor::getParameterNumSteps(int index)
+{
+    switch (index) {
+//        case gainDbParam:   return getParameterNumSteps(gainDbParam);
+//        case panParam:      return getParameterNumSteps(panParam);
+        default:            return AudioProcessor::getDefaultNumParameterSteps();
     }
 }
 
@@ -101,7 +95,6 @@ const String JuceGainAudioProcessor::getParameterName (int index)
     switch (index) {
         case gainParam:     return "Gain";
         case panParam:      return "Pan";
-//        case bypassParam:   return "Bypass";
         default:            return String::empty;
     }
 }
@@ -199,14 +192,12 @@ void JuceGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
 {
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
-//    if (!bypass) {
-        
         float* leftChannel  = buffer.getWritePointer(0);
         float* rightChannel = buffer.getWritePointer(1);
         
         for (int i = 0; i < buffer.getNumSamples(); i++) {
-            /* Constant Power Pan Law (-3db center, thus THREE_DB used to raise center):
-                leftChannel[i] = leftChannel[i] * cosf(pan * M_PI_2) * THREE_DB;
+            /* Constant Power Pan Law (-3db center, thus THREE_DB used to equal input at center):
+                leftChannel[i]  = leftChannel[i]  * cosf(pan * M_PI_2) * THREE_DB;
                 rightChannel[i] = rightChannel[i] * sinf(pan * M_PI_2) * THREE_DB;
              */
             leftChannel[i]  *= leftPanGain;
@@ -220,8 +211,6 @@ void JuceGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
         {
             buffer.clear (i, 0, buffer.getNumSamples());
         }
-        
-//    }
 }
 
 //==============================================================================
