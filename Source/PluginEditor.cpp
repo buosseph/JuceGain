@@ -36,16 +36,46 @@ JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcess
     gainDbSlider->setRange (-96, 10, 0.01);
     gainDbSlider->setSliderStyle (Slider::LinearVertical);
     gainDbSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 60, 20);
+    gainDbSlider->setColour (Slider::backgroundColourId, Colour (0x00000000));
     gainDbSlider->setColour (Slider::thumbColourId, Colours::grey);
+    gainDbSlider->setColour (Slider::trackColourId, Colour (0x7fffffff));
+    gainDbSlider->setColour (Slider::rotarySliderOutlineColourId, Colour (0x00000000));
+    gainDbSlider->setColour (Slider::textBoxTextColourId, Colours::white);
+    gainDbSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xff181818));
+    gainDbSlider->setColour (Slider::textBoxHighlightColourId, Colours::white);
+    gainDbSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x10808080));
     gainDbSlider->addListener (this);
 
     addAndMakeVisible (panSlider = new Slider ("Pan Rotary"));
-    panSlider->setTooltip (TRANS("Adjusts signal balance"));
+    panSlider->setTooltip (TRANS("Adjusts signal panning"));
     panSlider->setRange (-50, 50, 1);
     panSlider->setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
     panSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 60, 20);
     panSlider->setColour (Slider::rotarySliderFillColourId, Colours::grey);
+    panSlider->setColour (Slider::rotarySliderOutlineColourId, Colour (0x00000000));
+    panSlider->setColour (Slider::textBoxTextColourId, Colours::white);
+    panSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xff181818));
+    panSlider->setColour (Slider::textBoxHighlightColourId, Colours::white);
+    panSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x10808080));
     panSlider->addListener (this);
+
+    addAndMakeVisible (gainLabel = new Label ("Gain Label",
+                                              TRANS("Gain")));
+    gainLabel->setFont (Font (15.00f, Font::plain));
+    gainLabel->setJustificationType (Justification::centred);
+    gainLabel->setEditable (false, false, false);
+    gainLabel->setColour (Label::textColourId, Colours::white);
+    gainLabel->setColour (TextEditor::textColourId, Colours::black);
+    gainLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (panLabel = new Label ("Pan Label",
+                                             TRANS("Pan")));
+    panLabel->setFont (Font (15.00f, Font::plain));
+    panLabel->setJustificationType (Justification::centred);
+    panLabel->setEditable (false, false, false);
+    panLabel->setColour (Label::textColourId, Colours::white);
+    panLabel->setColour (TextEditor::textColourId, Colours::black);
+    panLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
 
     //[UserPreSize]
@@ -70,6 +100,9 @@ JuceGainAudioProcessorEditor::~JuceGainAudioProcessorEditor()
 
     gainDbSlider = nullptr;
     panSlider = nullptr;
+    gainLabel = nullptr;
+    panLabel = nullptr;
+
 
     //[Destructor]. You can add your own custom destruction code here..
     deleteAllChildren();
@@ -93,8 +126,10 @@ void JuceGainAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    gainDbSlider->setBounds (24, 24, 60, 260);
-    panSlider->setBounds (152, 192, 60, 90);
+    gainDbSlider->setBounds (40, 40, 60, 260);
+    panSlider->setBounds (144, 40, 60, 90);
+    gainLabel->setBounds (40, 16, 60, 20);
+    panLabel->setBounds (144, 16, 60, 20);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -138,7 +173,7 @@ void JuceGainAudioProcessorEditor::timerCallback() {
         (106.f * ourProcessor.uGain - 96.f),
         dontSendNotification
     );
-    
+
     panSlider->setValue(
         (100.f * ourProcessor.uPan - 50.f),
         dontSendNotification
@@ -163,15 +198,29 @@ BEGIN_JUCER_METADATA
                  fixedSize="1" initialWidth="240" initialHeight="320">
   <BACKGROUND backgroundColour="ff222222"/>
   <SLIDER name="Gain Slider" id="869ad7b78e733129" memberName="gainDbSlider"
-          virtualName="" explicitFocusOrder="0" pos="24 24 60 260" tooltip="Adjusts output volume"
-          thumbcol="ff808080" min="-96" max="10" int="0.010000000000000000208"
+          virtualName="" explicitFocusOrder="0" pos="40 40 60 260" tooltip="Adjusts output volume"
+          bkgcol="0" thumbcol="ff808080" trackcol="7fffffff" rotaryslideroutline="0"
+          textboxtext="ffffffff" textboxbkgd="ff181818" textboxhighlight="ffffffff"
+          textboxoutline="10808080" min="-96" max="10" int="0.010000000000000000208"
           style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="60" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Pan Rotary" id="7de69cf8fd092825" memberName="panSlider"
-          virtualName="" explicitFocusOrder="0" pos="152 192 60 90" tooltip="Adjusts signal panning"
-          rotarysliderfill="ff808080" min="-50" max="50" int="1" style="RotaryHorizontalVerticalDrag"
+          virtualName="" explicitFocusOrder="0" pos="144 40 60 90" tooltip="Adjusts signal panning"
+          rotarysliderfill="ff808080" rotaryslideroutline="0" textboxtext="ffffffff"
+          textboxbkgd="ff181818" textboxhighlight="ffffffff" textboxoutline="10808080"
+          min="-50" max="50" int="1" style="RotaryHorizontalVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="60"
           textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="Gain Label" id="19aa37d5dcee8b93" memberName="gainLabel"
+         virtualName="" explicitFocusOrder="0" pos="40 16 60 20" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Gain" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="36"/>
+  <LABEL name="Pan Label" id="1d49f726da265f5e" memberName="panLabel"
+         virtualName="" explicitFocusOrder="0" pos="144 16 60 20" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Pan" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="36"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

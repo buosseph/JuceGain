@@ -72,6 +72,8 @@ private:
     //==============================================================================
     ScopedPointer<Slider> gainDbSlider;
     ScopedPointer<Slider> panSlider;
+    ScopedPointer<Label> gainLabel;
+    ScopedPointer<Label> panLabel;
 
 
     //==============================================================================
