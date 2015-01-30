@@ -347,7 +347,6 @@
 		565BC358D1FCA40DC81EF1FB /* juce_FileChooserDialogBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_FileChooserDialogBox.cpp; path = "../../../../Course Work/S15/musi4545/JUCE-OSX/modules/juce_gui_basics/filebrowser/juce_FileChooserDialogBox.cpp"; sourceTree = SOURCE_ROOT; };
 		572824F4FE63BC4C3EF6E3E9 /* juce_win32_Network.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_win32_Network.cpp; path = "../../../../Course Work/S15/musi4545/JUCE-OSX/modules/juce_core/native/juce_win32_Network.cpp"; sourceTree = SOURCE_ROOT; };
 		575CD90606DE9B831EFED0A3 /* juce_win32_Midi.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_win32_Midi.cpp; path = "../../../../Course Work/S15/musi4545/JUCE-OSX/modules/juce_audio_devices/native/juce_win32_Midi.cpp"; sourceTree = SOURCE_ROOT; };
-		57C95A79DE67CC1F1520BA24 /* OldPluginEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OldPluginEditor.h; path = ../../Source/OldPluginEditor.h; sourceTree = SOURCE_ROOT; };
 		57CA6C164181DE02700D3427 /* juce_EdgeTable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_EdgeTable.h; path = "../../../../Course Work/S15/musi4545/JUCE-OSX/modules/juce_graphics/geometry/juce_EdgeTable.h"; sourceTree = SOURCE_ROOT; };
 		57F4C91000D68F8B6903369A /* juce_posix_SharedCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_posix_SharedCode.h; path = "../../../../Course Work/S15/musi4545/JUCE-OSX/modules/juce_core/native/juce_posix_SharedCode.h"; sourceTree = SOURCE_ROOT; };
 		57F764B796FD2F323DBDD9CA /* juce_Message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_Message.h; path = "../../../../Course Work/S15/musi4545/JUCE-OSX/modules/juce_events/messages/juce_Message.h"; sourceTree = SOURCE_ROOT; };
@@ -533,7 +532,6 @@
 		88A839399557BEE6DE0D07B4 /* juce_PluginUtilities.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_PluginUtilities.cpp; path = "../../../../Course Work/S15/musi4545/JUCE-OSX/modules/juce_audio_plugin_client/utility/juce_PluginUtilities.cpp"; sourceTree = SOURCE_ROOT; };
 		89313D9E9A7705D9A9451C2D /* juce_MenuBarModel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_MenuBarModel.cpp; path = "../../../../Course Work/S15/musi4545/JUCE-OSX/modules/juce_gui_basics/menus/juce_MenuBarModel.cpp"; sourceTree = SOURCE_ROOT; };
 		899E513FB4D9AB2485298C77 /* juce_Drawable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_Drawable.cpp; path = "../../../../Course Work/S15/musi4545/JUCE-OSX/modules/juce_gui_basics/drawables/juce_Drawable.cpp"; sourceTree = SOURCE_ROOT; };
-		89E4C43C253A37F620F0CC08 /* OldPluginEditor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = OldPluginEditor.cpp; path = ../../Source/OldPluginEditor.cpp; sourceTree = SOURCE_ROOT; };
 		8A4D3367CB45AE052870439A /* juce_linux_SystemTrayIcon.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_linux_SystemTrayIcon.cpp; path = "../../../../Course Work/S15/musi4545/JUCE-OSX/modules/juce_gui_extra/native/juce_linux_SystemTrayIcon.cpp"; sourceTree = SOURCE_ROOT; };
 		8B56685D8BBFC4776AC59560 /* juce_TooltipWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_TooltipWindow.cpp; path = "../../../../Course Work/S15/musi4545/JUCE-OSX/modules/juce_gui_basics/windows/juce_TooltipWindow.cpp"; sourceTree = SOURCE_ROOT; };
 		8BA1DD5F1C12FCA59D47AFDF /* juce_DirectoryContentsDisplayComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_DirectoryContentsDisplayComponent.cpp; path = "../../../../Course Work/S15/musi4545/JUCE-OSX/modules/juce_gui_basics/filebrowser/juce_DirectoryContentsDisplayComponent.cpp"; sourceTree = SOURCE_ROOT; };
@@ -1332,8 +1330,6 @@
 			children = (
 				9C2D1CCBFF350911F7BA3B6D /* PluginEditor.cpp */,
 				6489EE1408F40979EF271743 /* PluginEditor.h */,
-				89E4C43C253A37F620F0CC08 /* OldPluginEditor.cpp */,
-				57C95A79DE67CC1F1520BA24 /* OldPluginEditor.h */,
 				84FD6AF4EF0B04CF7D3EF2A9 /* PluginProcessor.cpp */,
 				AA647236879C10076BC02467 /* PluginProcessor.h */,
 			);

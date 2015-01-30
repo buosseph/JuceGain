@@ -40,7 +40,7 @@ JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcess
     gainDbSlider->addListener (this);
 
     addAndMakeVisible (panSlider = new Slider ("Pan Rotary"));
-    panSlider->setTooltip (TRANS("Adjusts signal panning"));
+    panSlider->setTooltip (TRANS("Adjusts signal balance"));
     panSlider->setRange (-50, 50, 1);
     panSlider->setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
     panSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 60, 20);
@@ -70,7 +70,6 @@ JuceGainAudioProcessorEditor::~JuceGainAudioProcessorEditor()
 
     gainDbSlider = nullptr;
     panSlider = nullptr;
-
 
     //[Destructor]. You can add your own custom destruction code here..
     deleteAllChildren();
@@ -110,7 +109,6 @@ void JuceGainAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMove
         //[UserSliderCode_gainDbSlider] -- add your slider handling code here..
         processor.setParameterNotifyingHost(
             JuceGainAudioProcessor::Parameters::gainParam,
-//            (float) sliderThatWasMoved->getValue()
             (float) (sliderThatWasMoved->getValue() + 96.f) / 106.f // map to 0.-1.f (uGain)
         );
         //[/UserSliderCode_gainDbSlider]
@@ -133,19 +131,18 @@ void JuceGainAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMove
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void JuceGainAudioProcessorEditor::timerCallback() {
-    // Timer conflicts cause UI stuttering
-//    JuceGainAudioProcessor& ourProcessor = getProcessor();
+    // Timer conflicts cause UI stuttering, this is due to the values not being mapped back
+    JuceGainAudioProcessor& ourProcessor = getProcessor();
 
-    /*
     gainDbSlider->setValue(
-        ourProcessor.uGainDb,
+        (106.f * ourProcessor.uGain - 96.f),
         dontSendNotification
     );
+    
     panSlider->setValue(
-        ourProcessor.uPan,
+        (100.f * ourProcessor.uPan - 50.f),
         dontSendNotification
     );
-    */
 }
 //[/MiscUserCode]
 
