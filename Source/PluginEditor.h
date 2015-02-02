@@ -23,6 +23,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PluginProcessor.h"
+#include "PluginLookAndFeel.h"
 //[/Headers]
 
 
@@ -67,6 +68,8 @@ private:
         return static_cast<JuceGainAudioProcessor&> (processor);
     }
 
+    PluginLookAndFeel pluginLookAndFeel;
+    
     //[/UserVariables]
 
     //==============================================================================

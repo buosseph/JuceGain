@@ -42,7 +42,6 @@ public:
     float getParameter (int index);
     void setParameter (int index, float newValue);
     float getParameterDefaultValue(int index);
-    int getParameterNumSteps(int index);
     
     const String getParameterName (int index);
     const String getParameterText (int index);

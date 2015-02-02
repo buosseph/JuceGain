@@ -18,7 +18,6 @@
 */
 
 //[Headers] You can add your own extra header files here...
-#include "PluginProcessor.h"
 //[/Headers]
 
 #include "PluginEditor.h"
@@ -83,6 +82,8 @@ JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcess
 
     gainDbSlider->setDoubleClickReturnValue(true, 0);
     panSlider->setDoubleClickReturnValue(true, 0);
+    
+    LookAndFeel::setDefaultLookAndFeel(&pluginLookAndFeel); // Custom Styling
     //[/UserPreSize]
 
     setSize (240, 320);

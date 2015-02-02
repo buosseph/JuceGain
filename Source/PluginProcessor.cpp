@@ -81,15 +81,6 @@ float JuceGainAudioProcessor::getParameterDefaultValue(int index) {
     }
 }
 
-int JuceGainAudioProcessor::getParameterNumSteps(int index)
-{
-    switch (index) {
-//        case gainDbParam:   return getParameterNumSteps(gainDbParam);
-//        case panParam:      return getParameterNumSteps(panParam);
-        default:            return AudioProcessor::getDefaultNumParameterSteps();
-    }
-}
-
 const String JuceGainAudioProcessor::getParameterName (int index)
 {
     switch (index) {
