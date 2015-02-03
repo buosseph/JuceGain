@@ -213,13 +213,13 @@
  #define JucePlugin_Build_AAX              0
 #endif
 #ifndef  JucePlugin_Name
- #define JucePlugin_Name                   "BU-P01-TOOL"
+ #define JucePlugin_Name                   "JuceGain"
 #endif
 #ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "BU-P01-TOOL"
+ #define JucePlugin_Desc                   "JuceGain"
 #endif
 #ifndef  JucePlugin_Manufacturer
- #define JucePlugin_Manufacturer           "musi45"
+ #define JucePlugin_Manufacturer           "brianuosseph"
 #endif
 #ifndef  JucePlugin_ManufacturerWebsite
  #define JucePlugin_ManufacturerWebsite    ""
