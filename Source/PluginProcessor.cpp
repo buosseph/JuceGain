@@ -92,7 +92,12 @@ const String JuceGainAudioProcessor::getParameterName (int index)
 
 const String JuceGainAudioProcessor::getParameterText (int index)
 {
-    return String(getParameter(index), 2);
+    // Reconvert 0.-1.f values to UI ranges for host to recognize
+    switch (index) {
+        case gainParam:     return String(106.f * uGain - 96.f, 2);
+        case panParam:      return String((int)(100.f * uPan - 50.f));
+        default:            return String(getParameter(index), 2);
+    }
 }
 
 const String JuceGainAudioProcessor::getInputChannelName (int channelIndex) const
